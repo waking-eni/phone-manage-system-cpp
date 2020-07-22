@@ -41,7 +41,7 @@ Record* Record::get_node() {
     //std::cout << temp->num << " " << temp->name;
     //std::cin.get();
 
-	temp->next = NULL;
+    temp->next = NULL;
     return temp;
 }
 
