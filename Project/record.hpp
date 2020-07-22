@@ -10,20 +10,20 @@
 class Record {
         static Record *my_list;
     public:
-	    int num;
+	int num;
         std::string name;
-		Record *next;
-		Record() { num = 0; name = ""; }
-		static void set_my_list(std::string _name, int _num) { my_list->name = _name; my_list->num = _num; }
-		static Record* get_my_list() { return my_list;}
-		Record* get_node();
-		Record* get_record();
-		Record* searh_node(int id, int *flag);
-		int insert_record(Record *node1);
-		void show_records();
-		int delete_record(int id);
-		Record* query(std::string *record, int flag);
-		void save_to_file();
+	Record *next;
+	Record() { num = 0; name = ""; }
+	static void set_my_list(std::string _name, int _num) { my_list->name = _name; my_list->num = _num; }
+	static Record* get_my_list() { return my_list;}
+	Record* get_node();
+	Record* get_record();
+	Record* searh_node(int id, int *flag);
+	int insert_record(Record *node1);
+	void show_records();
+	int delete_record(int id);
+	Record* query(std::string *record, int flag);
+	void save_to_file();
 };
 
 Record* Record::get_node() {
@@ -46,10 +46,10 @@ Record* Record::get_node() {
 }
 
 Record* Record::get_record() {
-	Record *temp;
-	temp = (Record*)malloc(sizeof(Record));
+    Record *temp;
+    temp = (Record*)malloc(sizeof(Record));
 
-	std::cout << "Enter the phone number: ";
+    std::cout << "Enter the phone number: ";
     std::cin >> temp->num;
     std::cout << "Enter the name: ";
     std::cin >> temp->name;
@@ -59,14 +59,14 @@ Record* Record::get_record() {
 }
 
 Record* Record::searh_node(int id, int *flag) {
-	Record *curr, *prev, *listt;
-	listt = listt->get_my_list();
+    Record *curr, *prev, *listt;
+    listt = listt->get_my_list();
 
-	*flag = 0;
+    *flag = 0;
 
-	if(listt == NULL)
-		return NULL;
-	for(prev = NULL, curr = listt; (curr); prev = curr, curr = curr->next) {
+    if(listt == NULL)
+	    return NULL;
+    for(prev = NULL, curr = listt; (curr); prev = curr, curr = curr->next) {
         if(curr->num == id) {
             *flag = 1;
             break;
@@ -76,13 +76,13 @@ Record* Record::searh_node(int id, int *flag) {
 }
 
 int Record::insert_record(Record *node1) {
-	Record *prev, *listt;
-	listt = listt->get_my_list();
-	int flag;
+    Record *prev, *listt;
+    listt = listt->get_my_list();
+    int flag;
 
-	prev = Record::searh_node(node1->num, &flag);
+    prev = Record::searh_node(node1->num, &flag);
 
-	if(listt == NULL) {
+    if(listt == NULL) {
         listt = node1; //first node
         return -1;
     } else {
@@ -94,14 +94,14 @@ int Record::insert_record(Record *node1) {
 }
 
 void Record::show_records() {
-	Record *curr, *listt;
-	listt = listt->get_my_list();
-	int record_number;
+    Record *curr, *listt;
+    listt = listt->get_my_list();
+    int record_number;
 
-	if(listt == NULL) {
+    if(listt == NULL) {
         std::cout << "The list is empty!";
         return;
-    }
+}
 
     std::cout << "The records: " << std::endl;
     curr = listt;
@@ -114,16 +114,16 @@ void Record::show_records() {
 }
 
 int Record::delete_record(int id) {
-	Record *prev, *temp, *listt;
-	listt = listt->get_my_list();
-	int flag = 0;
+    Record *prev, *temp, *listt;
+    listt = listt->get_my_list();
+    int flag = 0;
 
-	if(listt == NULL)
+    if(listt == NULL)
         return -1;
 
-	Record::searh_node(id, &flag);
+    Record::searh_node(id, &flag);
 
-	if(flag == 0)
+    if(flag == 0)
         return -1;
 
     if(prev == NULL) {
@@ -140,11 +140,11 @@ int Record::delete_record(int id) {
 }
 
 Record* Record::query(std::string *record, int flag) {
-	Record *curr, *prev, *listt;
-	listt = listt->get_my_list();
-	int rec_exists = 0;
+    Record *curr, *prev, *listt;
+    listt = listt->get_my_list();
+    int rec_exists = 0;
 
-	if(listt == NULL)
+    if(listt == NULL)
         return NULL;
 
     if(flag == 1) {
@@ -165,9 +165,9 @@ Record* Record::query(std::string *record, int flag) {
 }
 
 void Record::save_to_file() {
-	Record *curr, *listt;
-	listt = listt->get_my_list();
-	std::ofstream my_file ("phonebook.txt");
+    Record *curr, *listt;
+    listt = listt->get_my_list();
+    std::ofstream my_file ("phonebook.txt");
 
     curr = listt;
     if(curr == NULL) {
