@@ -27,12 +27,12 @@ class Record {
 };
 
 Record* Record::get_node() {
-	Record *temp;
-	temp = (Record*)malloc(sizeof(Record));
-	std::string name;
-	std::string num;
+    Record *temp;
+    temp = (Record*)malloc(sizeof(Record));
+    std::string name;
+    std::string num;
 
-	std::cin.get();
+    std::cin.get();
     std::ifstream my_file ("phonebook.txt");
     std::getline(my_file, name);
     std::getline(my_file, num);
