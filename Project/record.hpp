@@ -8,31 +8,30 @@
 #include <cstdio>
 
 class Record {
-        static Record *my_list;
     public:
-	int num;
+	    int num;
         std::string name;
-	Record *next;
-	Record() { num = 0; name = ""; }
-	static void set_my_list(std::string _name, int _num) { my_list->name = _name; my_list->num = _num; }
-	static Record* get_my_list() { return my_list;}
-	Record* get_node();
-	Record* get_record();
-	Record* searh_node(int id, int *flag);
-	int insert_record(Record *node1);
-	void show_records();
-	int delete_record(int id);
-	Record* query(std::string *record, int flag);
-	void save_to_file();
+		Record *next;
+		Record() { num = 0; name = ""; }
+		Record* get_node();
+		Record* get_record();
+		Record* searh_node(int id, int *flag);
+		int insert_record(Record *node1);
+		void show_records();
+		int delete_record(int id);
+		Record* query(std::string *record, int flag);
+		void save_to_file();
 };
 
-Record* Record::get_node() {
-    Record *temp;
-    temp = (Record*)malloc(sizeof(Record));
-    std::string name;
-    std::string num;
+extern Record *my_list;
 
-    std::cin.get();
+Record* Record::get_node() {
+	Record *temp;
+	temp = (Record*)malloc(sizeof(Record));
+	std::string name;
+	std::string num;
+
+	//std::cin.get();
     std::ifstream my_file ("phonebook.txt");
     std::getline(my_file, name);
     std::getline(my_file, num);
@@ -41,15 +40,15 @@ Record* Record::get_node() {
     //std::cout << temp->num << " " << temp->name;
     //std::cin.get();
 
-    temp->next = NULL;
+	temp->next = NULL;
     return temp;
 }
 
 Record* Record::get_record() {
-    Record *temp;
-    temp = (Record*)malloc(sizeof(Record));
+	Record *temp;
+	temp = (Record*)malloc(sizeof(Record));
 
-    std::cout << "Enter the phone number: ";
+	std::cout << "Enter the phone number: ";
     std::cin >> temp->num;
     std::cout << "Enter the name: ";
     std::cin >> temp->name;
@@ -59,14 +58,13 @@ Record* Record::get_record() {
 }
 
 Record* Record::searh_node(int id, int *flag) {
-    Record *curr, *prev, *listt;
-    listt = listt->get_my_list();
+	Record *curr, *prev;
 
-    *flag = 0;
+	*flag = 0;
 
-    if(listt == NULL)
-	    return NULL;
-    for(prev = NULL, curr = listt; (curr); prev = curr, curr = curr->next) {
+	if(my_list == NULL)
+		return NULL;
+	for(prev = NULL, curr = my_list; (curr); prev = curr, curr = curr->next) {
         if(curr->num == id) {
             *flag = 1;
             break;
@@ -76,14 +74,13 @@ Record* Record::searh_node(int id, int *flag) {
 }
 
 int Record::insert_record(Record *node1) {
-    Record *prev, *listt;
-    listt = listt->get_my_list();
-    int flag;
+	Record *prev;
+	int flag;
 
-    prev = Record::searh_node(node1->num, &flag);
+	prev = Record::searh_node(node1->num, &flag);
 
-    if(listt == NULL) {
-        listt = node1; //first node
+	if(my_list == NULL) {
+        my_list = node1; //first node
         return -1;
     } else {
         node1->next = prev->next;
@@ -94,41 +91,37 @@ int Record::insert_record(Record *node1) {
 }
 
 void Record::show_records() {
-    Record *curr, *listt;
-    listt = listt->get_my_list();
-    int record_number;
+	Record *curr;
 
-    if(listt == NULL) {
+	if(my_list == NULL) {
         std::cout << "The list is empty!";
         return;
-}
+    }
 
     std::cout << "The records: " << std::endl;
-    curr = listt;
-    for(curr = listt; (curr); curr = curr->next) {
-        std::cout << record_number+1 << ".\t";
+    curr = my_list;
+    for(curr = my_list; (curr); curr = curr->next) {
+        std::cout << "*" << "\t";
         std::cout << curr->name << ", ";
-        std::cout << curr->num << ".";
-        record_number++;
+        std::cout << curr->num << "." << std::endl;
     }
 }
 
 int Record::delete_record(int id) {
-    Record *prev, *temp, *listt;
-    listt = listt->get_my_list();
-    int flag = 0;
+	Record *prev, *temp;
+	int flag = 0;
 
-    if(listt == NULL)
+	if(my_list == NULL)
         return -1;
 
-    Record::searh_node(id, &flag);
+	Record::searh_node(id, &flag);
 
-    if(flag == 0)
+	if(flag == 0)
         return -1;
 
     if(prev == NULL) {
-        temp = listt;
-        listt = listt->next;
+        temp = my_list;
+        my_list = my_list->next;
         free(temp);
     } else {
         temp = prev->next;
@@ -140,15 +133,14 @@ int Record::delete_record(int id) {
 }
 
 Record* Record::query(std::string *record, int flag) {
-    Record *curr, *prev, *listt;
-    listt = listt->get_my_list();
-    int rec_exists = 0;
+	Record *curr, *prev;
+	int rec_exists = 0;
 
-    if(listt == NULL)
+	if(my_list == NULL)
         return NULL;
 
     if(flag == 1) {
-        for(prev = NULL, curr = listt; (curr); prev = curr, curr = curr->next) {
+        for(prev = NULL, curr = my_list; (curr); prev = curr, curr = curr->next) {
             if((std::to_string(curr->num) == *record) || (curr->name == *record)) {
                 rec_exists = 1;
                 break;
@@ -165,17 +157,16 @@ Record* Record::query(std::string *record, int flag) {
 }
 
 void Record::save_to_file() {
-    Record *curr, *listt;
-    listt = listt->get_my_list();
-    std::ofstream my_file ("phonebook.txt");
+	Record *curr;
+	std::ofstream my_file ("phonebook.txt");
 
-    curr = listt;
+    curr = my_list;
     if(curr == NULL) {
         std::cout << "Nothing to write.";
         return;
     }
 
-    for(curr = listt; (curr); curr = curr->next) {
+    for(curr = my_list; (curr); curr = curr->next) {
         if(my_file.is_open()) {
             my_file << curr->name;
             my_file << curr->num;
