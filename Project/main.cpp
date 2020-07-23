@@ -11,12 +11,11 @@ using std::cin;
 using std::endl;
 
 Record *node1, *node2, *use_me;
-Record* Record::my_list;
+Record *my_list = node1->get_node();
 
 int main()
 {
     int choice = 0, for_delete = 0, val = 0;
-    Record* my_list = Record::get_my_list();
     std::string chosen_record;
 
     std::string line;
@@ -30,18 +29,10 @@ int main()
         cin.get();
         exit(1);
     }
-
-    try {
-        use_me = node1->get_node();
-        Record::set_my_list(use_me->name, use_me->num);
-    } catch(Record* use_me) {
-        cout << "Nesto ne valja" << use_me;
-    }
-
     my_file.close();
 
     do {
-        system("cls");
+        //system("cls");
         cout << "Menu:" << endl;
         cout << "1. Add a new phone record." << endl;
         cout << "2. Delete an existing record." << endl;
