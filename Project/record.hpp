@@ -132,7 +132,7 @@ int Record::delete_record(std::string name) {
 	if(temp.is_open()) {
 		while(getline(my_file, line)) {
 		    if(name == line) {
-			buffer.push_back("aha");
+			continue;
 		    }
             	buffer.push_back(line);
         	}
