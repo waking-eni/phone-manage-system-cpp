@@ -17,7 +17,7 @@ Record *my_list = node1->get_node();
 int main()
 {
     int choice = 0, for_delete = 0, val = 0;
-    std::string chosen_record, val_delete;
+    std::string chosen_record_name, chosen_record_num, val_delete;
     std::string name, num;
 
     std::string line;
@@ -33,7 +33,6 @@ int main()
     my_file.close();
 
     do {
-        //system("cls");
         cout << "Menu:" << endl;
         cout << "1. Add a new phone record." << endl;
         cout << "2. Delete an existing record." << endl;
@@ -55,9 +54,11 @@ int main()
                 break;
             case 2:
                 //deleting a record
-                cout << "Enter the phone number you wish to delete: ";
-                cin >> val;
-                for_delete = use_me->delete_record(val_delete);
+                cout << "Enter the phone number you wish to delete: \n";
+                cin >> num;
+                cout << "Enter the name: \n";
+                cin >> name;
+                for_delete = use_me->delete_record(name, num);
 
                 if(for_delete == -1)
                     cout << "This record doesn't exist! Try again: ";
@@ -69,19 +70,27 @@ int main()
                 break;
             case 4:
                 //editing a record
-                cout << "Enter the name or the phone number of the record you wish to edit: \n";
-                cin >> chosen_record;
+                cout << "Enter the name of the record you wish to edit: \n";
+                cin >> chosen_record_name;
+                cout << "Enter the  phone number of the record you wish to edit: \n";
+                cin >> chosen_record_num;
                 cout << "Enter the new name: \n";
                 cin >> name;
                 cout << "Enter the new phone number: \n";
                 cin >> num;
 
                 //check if a number was entered
-                for(std::string::iterator it = chosen_record.begin(); it != chosen_record.end(); it++) {
+                for(std::string::iterator it = chosen_record_num.begin(); it != chosen_record_num.end(); it++) {
                     if(std::isdigit(*it))
-                        val = use_me->edit_record(&chosen_record, name, num);
+                        val = use_me->edit_record(chosen_record_name, chosen_record_num, name, num);
                 }
 
+                if(val == -1)
+                    cout << "This record doesn't exist! Try again: ";
+                else if(val == 0)
+                    cout << "Record successfully edited\n";
+
+                use_me->show_records();
                 break;
             case 5:
                 //exiting
