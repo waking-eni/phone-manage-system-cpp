@@ -34,7 +34,7 @@ Record* Record::get_node() {
 
 	//std::cin.get();
     	std::ifstream my_file ("phonebook.txt");
-	    std::getline(my_file, name);
+	std::getline(my_file, name);
     	std::getline(my_file, num);
     	temp->name = name;
     	temp->num = std::stoi(num);
@@ -69,7 +69,7 @@ Record* Record::searh_node(int id, int *flag) {
 		    break;
 		}
     	}
-    return prev;
+    	return prev;
 }
 
 int Record::insert_record(Record *node1) {
