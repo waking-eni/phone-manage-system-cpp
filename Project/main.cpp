@@ -16,8 +16,8 @@ Record *my_list = node1->get_node();
 
 int main()
 {
-    int choice = 0, for_delete = 0, val = 0;
-    std::string chosen_record_name, chosen_record_num, val_delete;
+    int choice = 0, val = 0;
+    std::string chosen_record_name, chosen_record_num;
     std::string name, num;
 
     std::string line;
@@ -58,11 +58,11 @@ int main()
                 cin >> num;
                 cout << "Enter the name: \n";
                 cin >> name;
-                for_delete = use_me->delete_record(name, num);
+                val = use_me->delete_record(name, num);
 
-                if(for_delete == -1)
+                if(val == -1)
                     cout << "This record doesn't exist! Try again: ";
-                else if(for_delete == 0)
+                else if(val == 0)
                     cout << "Record successfully deleted\n";
             case 3:
                 //displaying all records
