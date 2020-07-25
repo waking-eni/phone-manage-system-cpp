@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1595700840 source:c:\users\neven\documents\cplusplusprojects\phonemanagesystem\main.cpp
+	<iostream>
+	<fstream>
+	<conio.h>
+	<stdlib.h>
+	<string>
+	<iterator>
+	"record.hpp"
+
+1595700965 c:\users\neven\documents\cplusplusprojects\phonemanagesystem\record.hpp
+	<string>
+	<iostream>
+	<fstream>
+	<stdlib.h>
+	<cstdio>
+	<vector>
+	<iterator>
+	<algorithm>
+
