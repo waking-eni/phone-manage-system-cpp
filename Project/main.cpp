@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <fstream>
 #include <conio.h>
@@ -16,10 +17,10 @@ Record *my_list = node1->get_node();
 int main()
 {
     int choice = 0, for_delete = 0, val = 0;
-    std::string chosen_record;
+    std::string chosen_record, val_delete;
+    std::string name, num;
 
     std::string line;
-    int fl = 0;
 
     system("cls");
 
@@ -56,12 +57,12 @@ int main()
                 //deleting a record
                 cout << "Enter the phone number you wish to delete: ";
                 cin >> val;
-                for_delete = use_me->delete_record(val);
+                for_delete = use_me->delete_record(val_delete);
 
                 if(for_delete == -1)
                     cout << "This record doesn't exist! Try again: ";
                 else if(for_delete == 0)
-                    cout << "Record successfully deleted";
+                    cout << "Record successfully deleted\n";
             case 3:
                 //displaying all records
                 use_me->show_records();
@@ -70,29 +71,20 @@ int main()
                 //editing a record
                 cout << "Enter the name or the phone number of the record you wish to edit: ";
                 cin >> chosen_record;
+                cout << "Enter the new name: ";
+                cin >> name;
+                cout << "Enter the new phone number: ";
+                cin >> num;
 
                 //check if a number was entered
-                for(std::string::iterator it = chosen_record.begin(); it != chosen_record.end(); it++)
-                {
+                for(std::string::iterator it = chosen_record.begin(); it != chosen_record.end(); it++) {
                     if(std::isdigit(*it))
-                        fl = 1;
+                        val = use_me->edit_record(&chosen_record, name, num);
                 }
-                node2 = use_me->query(&chosen_record, fl);
 
-                //after the query
-                if(node2)
-                {
-                    cout << "Enter the new name: ";
-                    cin >> node2->name;
-                    cout << "Enter the new phone number: ";
-                    cin >> node2->num;
-                }
                 break;
             case 5:
                 //exiting
-                cout << "Exiting, writing back to file...";
-                use_me->save_to_file();
-                cin.get();
                 exit(1);
                 break;
         }
