@@ -51,7 +51,7 @@ int main()
                 if(val == -1)
                     cout << "This record already exists! Try again: ";
                 else
-                    cout << "Record successfully stored.";
+                    cout << "Record successfully stored.\n";
                 break;
             case 2:
                 //deleting a record
@@ -69,11 +69,11 @@ int main()
                 break;
             case 4:
                 //editing a record
-                cout << "Enter the name or the phone number of the record you wish to edit: ";
+                cout << "Enter the name or the phone number of the record you wish to edit: \n";
                 cin >> chosen_record;
-                cout << "Enter the new name: ";
+                cout << "Enter the new name: \n";
                 cin >> name;
-                cout << "Enter the new phone number: ";
+                cout << "Enter the new phone number: \n";
                 cin >> num;
 
                 //check if a number was entered
