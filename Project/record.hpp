@@ -6,6 +6,8 @@
 #include <fstream>
 #include <stdlib.h>
 #include <cstdio>
+#include <vector>
+#include <iterator>
 
 class Record {
     public:
@@ -18,9 +20,8 @@ class Record {
 		Record* searh_node(int id, int *flag);
 		int insert_record(Record *node1);
 		void show_records();
-		int delete_record(int id);
-		Record* query(std::string *record, int flag);
-		void save_to_file();
+		int delete_record(std::string name);
+		int edit_record(std::string *record, std::string name, std::string num);
 };
 
 extern Record *my_list;
@@ -85,6 +86,14 @@ int Record::insert_record(Record *node1) {
     } else {
         node1->next = prev->next;
         prev->next = node1; //insert in the middle or end
+        std::ofstream my_file("phonebook.txt", std::ofstream::app);
+        if (my_file.is_open()) {
+            my_file << "\n";
+            my_file << node1->name;
+            my_file << "\n";
+            my_file << std::to_string(node1->num);
+        }
+        my_file.close();
     }
 
     return 0;
@@ -99,80 +108,83 @@ void Record::show_records() {
     }
 
     std::cout << "The records: " << std::endl;
-    curr = my_list;
-    for(curr = my_list; (curr); curr = curr->next) {
-        std::cout << "*" << "\t";
-        std::cout << curr->name << ", ";
-        std::cout << curr->num << "." << std::endl;
+    std::ifstream my_file ("phonebook.txt");
+    std::string line;
+    if(my_file.is_open()) {
+        while(getline(my_file, line)) {
+            std::cout << line << '\n';
+        }
+    } else {
+        std::cout << "Can't open file.";
     }
+    my_file.close();
 }
 
-int Record::delete_record(int id) {
-	Record *prev, *temp;
-	int flag = 0;
+int Record::delete_record(std::string name) {
+    std::vector<std::string> buffer;
+
+	std::ifstream my_file ("phonebook.txt");
+	std::string line;
+
+	std::ofstream temp("temp.txt");
 
 	if(my_list == NULL)
         return -1;
 
-	Record::searh_node(id, &flag);
+	if(temp.is_open()) {
+        while(getline(my_file, line)) {
+            if(name == line) {
+                buffer.push_back("aha");
+            }
+            buffer.push_back(line);
+        }
+        std::ostream_iterator<std::string> output_iterator(temp, "\n");
+        std::copy(buffer.begin(), buffer.end() - 1, output_iterator);
+    }
+    my_file.close();
+    temp.close();
 
-	if(flag == 0)
+    remove("phonebook.txt");
+    rename("temp.txt", "phonebook.txt");
+
+    return 0;
+}
+
+int Record::edit_record(std::string *record, std::string name, std::string num) {
+	int rec_exists = 0;
+	std::vector<std::string> buffer;
+
+	std::ifstream my_file ("phonebook.txt");
+	std::string line;
+
+	std::ofstream temp("temp.txt");
+
+	if(my_list == NULL)
         return -1;
 
-    if(prev == NULL) {
-        temp = my_list;
-        my_list = my_list->next;
-        free(temp);
-    } else {
-        temp = prev->next;
-        prev->next = temp->next;
-        free(temp);
+	if(temp.is_open()) {
+        while(getline(my_file, line)) {
+            if(name == line) {
+                buffer.push_back("aha");
+            }
+            buffer.push_back(line);
+        }
+        std::ostream_iterator<std::string> output_iterator(temp, "\n");
+        std::copy(buffer.begin(), buffer.end(), output_iterator);
+    }
+    my_file.close();
+    temp.close();
+
+    remove("phonebook.txt");
+    rename("temp.txt", "phonebook.txt");
+
+    if(rec_exists == 0) {
+        std::cout << "The record doesn't exist!\n";
+        return NULL;
     }
 
     return 0;
 }
 
-Record* Record::query(std::string *record, int flag) {
-	Record *curr, *prev;
-	int rec_exists = 0;
-
-	if(my_list == NULL)
-        return NULL;
-
-    if(flag == 1) {
-        for(prev = NULL, curr = my_list; (curr); prev = curr, curr = curr->next) {
-            if((std::to_string(curr->num) == *record) || (curr->name == *record)) {
-                rec_exists = 1;
-                break;
-            }
-        }
-    }
-
-    if(rec_exists == 0) {
-        std::cout << "The record doesn't exist!";
-        return NULL;
-    }
-
-    return curr;
-}
-
-void Record::save_to_file() {
-	Record *curr;
-	std::ofstream my_file ("phonebook.txt");
-
-    curr = my_list;
-    if(curr == NULL) {
-        std::cout << "Nothing to write.";
-        return;
-    }
-
-    for(curr = my_list; (curr); curr = curr->next) {
-        if(my_file.is_open()) {
-            my_file << curr->name;
-            my_file << curr->num;
-        }
-    }
-    my_file.close();
-}
-
 #endif // RECORD_HPP_INCLUDED
+
